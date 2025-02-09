@@ -10,7 +10,7 @@ load_dotenv()
 from google_authenticator import initialize_service
 from calendar_tools import init_calendar_service, get_time, get_events, set_event, delete_event
 
-llm=ChatOpenAI(model="gpt-4o", temperature=0, api_key=os.getenv("OPENAI_API_KEY"))
+llm = None
 
 
 def execute(user_input: str):
@@ -43,10 +43,16 @@ def execute(user_input: str):
     #print(result.get("output"))
     return result
 
-
-if __name__ == '__main__':
+def authenticate():
+    global llm
+    
+    llm=ChatOpenAI(model="gpt-4o", temperature=0, api_key=os.getenv("OPENAI_API_KEY"))
     service = initialize_service()
     init_calendar_service(service)
+
+
+if __name__ == '__main__':
+    authenticate()
 
     while True:
         user_msg = input("You: ")
