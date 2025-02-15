@@ -1,34 +1,56 @@
-from flask import Flask, request
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 from main import execute, authenticate
 
+
 app = Flask(__name__)
+cors = CORS(app, allow_origins="*")
 
-'''@app.route("/")
-def assistant():
-    #response = execute("Hello how are you")
-    #print(response.get("output"))
-    ans = execute("Hello how are you")
-    return ans'''
 
-@app.route("/", methods=["GET", "POST"])
-def assistant():
-    if request.method == "POST":
-        # Get the user’s input from the form
-        user_question = request.form.get("question", "")
-        # Call your model here (e.g., "execute(user_question)")
-        response = execute(user_question).get("output")
-        # Return some page displaying the answer
-        return f"""
-            <html>
-                <body>
-                    <p>You asked: {user_question}</p>
-                    <p>Answer: {response}</p>
-                    <a href="/">Ask another</a>
-                </body>
-            </html>
-        """
+@app.route("/process", methods=["POST"])
+def process_input():
+    data = request.json
+    user_input = data.get("text", "")
+    response = execute(user_input).get("output")
+    return jsonify({"response": response})
 
-    # If GET request, show the form
+
+
+
+
+@app.route("/api/users", methods=['GET'])
+def users():
+    return jsonify(
+        {
+            "users": [
+                'arpan',
+                'zach',
+                'jessie'
+            ]
+        }
+    )
+
+
+@app.route("/chat", methods=["POST"])
+def ask_question():
+    #Send the message to the AI Agent
+    
+    user_question = request.form.get("question", "")
+    response = execute(user_question).get("output")
+
+    return f"""
+        <html>
+            <body>
+                <p>You asked: {user_question}</p>
+                <p>Answer: {response}</p>
+                <a href="/chat">Ask another</a>
+            </body>
+        </html>
+    """
+
+@app.route("/chat", methods=["GET"])
+def answer():
+    # Return the answer
     return """
         <html>
             <body>
@@ -41,6 +63,7 @@ def assistant():
         </html>
     """
 
+
 if __name__ == '__main__':
     authenticate()
-    app.run()
+    app.run(debug=True)
