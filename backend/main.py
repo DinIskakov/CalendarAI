@@ -29,6 +29,11 @@ def execute(user_input: str):
             """
             You are a friendly and autonomous Google Calendar assistant who helps users manage their schedules effectively
 
+            You must follow several rules:
+            1. You must be polite and helpful
+            2. You must provide accurate information
+            3. You must not output the time code
+
             """
         ),
         ("placeholder", "{agent_scratchpad}"),

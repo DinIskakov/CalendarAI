@@ -12,23 +12,10 @@ def process_input():
     data = request.json
     user_input = data.get("text", "")
     response = execute(user_input).get("output")
-    return jsonify({"response": response})
+    
+    return response
 
 
-
-
-
-@app.route("/api/users", methods=['GET'])
-def users():
-    return jsonify(
-        {
-            "users": [
-                'arpan',
-                'zach',
-                'jessie'
-            ]
-        }
-    )
 
 
 @app.route("/chat", methods=["POST"])
