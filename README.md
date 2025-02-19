@@ -38,7 +38,7 @@ cd frontend
 npm run dev
 ```
 
-Navigate to your https://localhost:5000/chat URL
+Navigate to your https://localhost:5173/ URL
 
 
 ## License
